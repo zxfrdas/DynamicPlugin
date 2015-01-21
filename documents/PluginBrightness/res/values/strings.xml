@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="app_name">PluginBrightness</string>
+    <string name="plugin_class_name">com.zt.plugin.brightness.PluginImpl</string>
+    
+    
+    
+    <!-- ##############      控制中心部分       ###################### -->
+    <string name="control_btn_hint_brightness">Brightness</string>
+    
+    
+</resources>

@@ -1,0 +1,106 @@
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android_custom="http://schemas.android.com/apk/res/com.zt.plugin.brightness"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+	    
+    <!-- 亮度调节 -->
+    <LinearLayout 
+        android:id="@+id/brightness_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+       	android:layout_gravity="bottom|center_horizontal"
+           android:focusable="true"
+           android:clickable="true"
+        >
+        <ImageView
+            android:id="@+id/brightness_inc" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/control_icon_inc"
+               android:focusable="false"
+               android:clickable="false"
+               android:visibility="gone"
+            />
+        
+        <FrameLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+               android:focusable="false"
+               android:clickable="false">
+            
+            <com.zt.plugin.brightness.RoundProgressBar
+		        android:id="@+id/brightness_progress"
+		        android:layout_width="103dp"
+		        android:layout_height="103dp"
+		        android:layout_marginLeft="14dp"
+		        android:layout_marginRight="14dp"
+		        android_custom:roundColor="#565656"
+		        android_custom:roundWidth="2dp"
+		        android_custom:roundProgressColor="#36e5ff"
+		        android_custom:textIsDisplayable="false" 
+                android:focusable="false"
+                android:clickable="false"
+                android:visibility="gone"/>
+            
+            <ImageView 
+                android:id="@+id/brightness_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/control_menu_btn_bg_uns"
+                android:focusable="false"
+                android:clickable="false"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                />
+            
+            <ImageView 
+                android:id="@+id/brightness_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            	android:layout_gravity="center"
+                android:background="@drawable/control_menu_brightness_icon_uns"
+                android:focusable="false"
+                android:clickable="false"/>
+            
+            <TextView 
+                android:id="@+id/brightness_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            	android:layout_gravity="center"
+                android:textColor="#36e5ff" 
+                android:textSize="32dp"
+                android:focusable="false"
+                android:clickable="false"
+                android:text="68"
+                android:visibility="gone"/>
+        </FrameLayout>
+        
+        <ImageView
+            android:id="@+id/brightness_dec" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/control_icon_dec"
+               android:focusable="false"
+               android:clickable="false"
+               android:visibility="gone"
+            />
+        <TextView 
+            android:id="@+id/brightness_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/control_btn_hint_brightness"
+            android:textColor="#a2a9b2" 
+            android:textSize="15dp"
+               android:focusable="false"
+               android:clickable="false"
+            /><!-- 未选   a2a9b2          选中   36e5ff --> 
+    </LinearLayout>
+
+</LinearLayout>

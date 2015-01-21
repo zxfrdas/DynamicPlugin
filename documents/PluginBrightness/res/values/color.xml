@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 透明色 -->
+    <color name="transparent">#00000000</color>
+    <color name="gray_black">#000000</color>
+    <color name="red">#ef713f</color>
+    
+    
+
+    <!-- 控制中心部分 -->
+    <color name="control_hint_color_uns">#a2a9b2</color>
+    <color name="control_hint_color_s">#36e5ff</color>
+    <color name="weather_item_text">#b4b4b4</color>
+    <color name="white">#ffffff</color>
+    <color name="weather_focus">#d6fdff</color>  <!-- 蓝色 -->
+    <color name="weather_shadow">#36ebff</color> <!-- 发光色 -->
+    <color name="weather_add_color">#595d61</color>
+    <color name="yello">#ffc000</color><!-- 黄色 -->
+ <color name="qianhui">#5f5f5f</color><!-- 天气第一行小字颜色 -->
+ 
+</resources>

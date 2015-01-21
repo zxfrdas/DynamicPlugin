@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <declare-styleable name="RoundProgressBar">
+        <attr name="roundColor" format="color" />
+        <attr name="roundProgressColor" format="color" />
+        <attr name="roundWidth" format="dimension"></attr>
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="max" format="integer"></attr>
+        <attr name="textIsDisplayable" format="boolean"></attr>
+        <attr name="style">
+            <enum name="STROKE" value="0"></enum>
+            <enum name="FILL" value="1"></enum>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="PickerView">
+        <attr name="pickShadowRadius" format="integer" />
+        <attr name="PickShadowColor" format="color" />
+        <attr name="PicktextColor" format="color" />
+        <attr name="PickFocusColor" format="color" />
+        <attr name="maxTextSize" format="dimension" />
+        <attr name="minTextSize" format="dimension" />
+        <attr name="maxTextAlpha" format="dimension" />
+        <attr name="minTextAlpha" format="dimension" />
+    </declare-styleable>
+
+    <!--
+          1.declare-styleable 是定义自定义属性集合名称的节点元素
+            2.format可选项 
+               "reference"//引用 
+               "color"//颜色 
+               "boolean"//布尔值 
+               "dimension"//尺寸值 
+               "float"//浮点值 
+               "integer"//整型值 
+               "string"//字符串 
+               "fraction"//百分数,比如200% 
+            3．元素节点 attr 定义各自定义属性名称   format用来定义属性值的类型值，可以指定多种类型值如：
+                 <attr name = "background" format ="reference|color" />       
+            4.枚举值，格式如下： 
+              <attrn ame="orientation"> 
+                   <enum name="horizontal" value="0" /> 
+                  <enum name="vertical" value="1" /> 
+             </attr>   
+             xml中使用时： 
+             android:orientation= "vertical"
+    -->
+
+</resources>
