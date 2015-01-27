@@ -4,13 +4,11 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.konka.dynamicplugin.core.PluginInfo;
-import com.konka.dynamicplugin.core.tools.DLUtils;
-
-import android.content.pm.PermissionInfo;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
+
+import com.konka.dynamicplugin.core.PluginInfo;
 
 /**
  * 控制插件/宿主的{@code AssetManager},{@code Resources},{@code Theme},
@@ -28,7 +26,6 @@ public final class ResourceController {
 	private Map<String, Theme> mThemeMap;
 	private Map<String, ClassLoader> mClassLoaderMap;
 	private Map<String, PluginInfo> mLoadedPluginMap;
-	private Map<String, String[]> mPermissionsMap;
 	private String mCurrentPluginApk;
 
 	public static final class Dependence {
@@ -53,7 +50,6 @@ public final class ResourceController {
 		mResourcesMap = new HashMap<String, Resources>();
 		mThemeMap = new HashMap<String, Resources.Theme>();
 		mLoadedPluginMap = new HashMap<String, PluginInfo>();
-		mPermissionsMap = new HashMap<String, String[]>();
 	}
 
 	public void setDependence(Dependence dependence) {
@@ -92,8 +88,6 @@ public final class ResourceController {
 			Theme theme = resources.newTheme();
 			theme.setTo(getSuperTheme());
 			mThemeMap.put(apkPath, theme);
-			// permissions
-//			mPermissionsMap.put(apkPath, DLUtils.getAppPermissions(context, apkPath));
 			// set loaded
 			final String packageName = pluginInfo.getPackageName();
 			mLoadedPluginMap.put(packageName, pluginInfo);

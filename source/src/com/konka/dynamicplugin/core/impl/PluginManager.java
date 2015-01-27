@@ -18,14 +18,14 @@ import android.view.View;
 import com.konka.dynamicplugin.core.IAsyncListener;
 import com.konka.dynamicplugin.core.IPluginManager;
 import com.konka.dynamicplugin.core.PluginInfo;
+import com.konka.dynamicplugin.core.auto.PluginInfoDAO;
+import com.konka.dynamicplugin.core.auto.PluginInfoProxy;
 import com.konka.dynamicplugin.core.impl.PostToUI.Task;
 import com.konka.dynamicplugin.core.impl.ResourceController.Dependence;
 import com.konka.dynamicplugin.core.tools.DLUtils;
-import com.konka.dynamicplugin.database.PluginInfo2DAO;
-import com.konka.dynamicplugin.database.PluginInfo2Proxy;
 import com.konka.dynamicplugin.plugin.IPlugin;
-import com.zt.lib.database.condition.Condition;
-import com.zt.lib.database.dao.IDAO;
+import com.zt.simpledao.condition.Condition;
+import com.zt.simpledao.dao.IDAO;
 
 /**
  * 插件管理类。提供插件的安装/卸载/更新，启用/禁用，获取视图等操作方法。
@@ -51,7 +51,7 @@ public final class PluginManager implements IPluginManager {
 	private LocalPluginChecker mChecker;
 	private ExecutorService mThreads;
 	private PostToUI mPostToUI;
-
+	
 	public static PluginManager getInstance(Context context) {
 		if (null == sInstance) {
 			synchronized (PluginManager.class) {
@@ -65,7 +65,7 @@ public final class PluginManager implements IPluginManager {
 
 	private PluginManager(Context context) {
 		mChecker = LocalPluginChecker.getInstance();
-		mPluginDB = PluginInfo2DAO.getInstance(context);
+		mPluginDB = PluginInfoDAO.getInstance(context);
 		mThreads = Executors.newFixedThreadPool(2);
 		mPostToUI = new PostToUI();
 	}
@@ -209,7 +209,7 @@ public final class PluginManager implements IPluginManager {
 	}
 
 	private Condition whereApkPath(String apkPath) {
-		return mPluginDB.buildCondition().where(PluginInfo2Proxy.apkPath)
+		return mPluginDB.buildCondition().where(PluginInfoProxy.apkPath)
 				.equal(apkPath).buildDone();
 	}
 
@@ -340,15 +340,15 @@ public final class PluginManager implements IPluginManager {
 	public List<PluginInfo> getInstalledPlugins() {
 		Log.d(TAG, "getInstalledPlugins");
 		return mPluginDB.query(mPluginDB.buildCondition()
-				.where(PluginInfo2Proxy.installed).equal(true).buildDone());
+				.where(PluginInfoProxy.installed).equal(true).buildDone());
 	}
 
 	@Override
 	public List<PluginInfo> getEnablePlugins() {
 		Log.d(TAG, "getEnablePlugins");
 		List<PluginInfo> enablePlugins = mPluginDB.query(mPluginDB.buildCondition()
-				.where(PluginInfo2Proxy.enabled).equal(true)
-				.orderby(PluginInfo2Proxy.enableIndex).buildDone());
+				.where(PluginInfoProxy.enabled).equal(true)
+				.orderby(PluginInfoProxy.enableIndex, true).buildDone());
 		loadPluginsResource(enablePlugins);
 		return enablePlugins;
 	}

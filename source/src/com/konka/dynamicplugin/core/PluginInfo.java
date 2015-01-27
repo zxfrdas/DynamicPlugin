@@ -8,33 +8,33 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import com.zt.lib.database.Column;
-import com.zt.lib.database.Database;
-import com.zt.lib.database.SQLDataType;
-import com.zt.lib.database.Table;
+import com.zt.simpledao.Column;
+import com.zt.simpledao.Database;
+import com.zt.simpledao.SQLDataType;
+import com.zt.simpledao.Table;
 
-@Database(name = "plugin.db", version = 3)
+@Database(name = "plugin.db", version = 4)
 @Table(name="plugins")
 public class PluginInfo {
-	@Column(index=1, name="Title", type=SQLDataType.TEXT)
+	@Column(name="Title", type=SQLDataType.TEXT)
 	private String title;
-	@Column(index=2, name="ApkPath", type=SQLDataType.TEXT)
+	@Column(name="ApkPath", type=SQLDataType.TEXT, primary=true)
 	private String apkPath;
-	@Column(index=3, name="DexPath", type=SQLDataType.TEXT)
+	@Column(name="DexPath", type=SQLDataType.TEXT)
 	private String dexPath;
-	@Column(index=4, name="PackageName", type=SQLDataType.TEXT)
+	@Column(name="PackageName", type=SQLDataType.TEXT)
 	private String packageName;
-	@Column(index=5, name="EntryClass", type=SQLDataType.TEXT)
+	@Column(name="EntryClass", type=SQLDataType.TEXT)
 	private String entryClass;
-	@Column(index=6, name="Icon", type=SQLDataType.BLOB)
+	@Column(name="Icon", type=SQLDataType.BLOB)
 	private byte[] icon;
-	@Column(index=7, name="Version", type=SQLDataType.INTEGER)
+	@Column(name="Version", type=SQLDataType.INTEGER)
 	private int version;
-	@Column(index=8, name="Install", type=SQLDataType.INTEGER)
+	@Column(name="Install", type=SQLDataType.INTEGER)
 	private boolean installed;
-	@Column(index=9, name="Enable", type=SQLDataType.INTEGER)
+	@Column(name="Enable", type=SQLDataType.INTEGER)
 	private boolean enabled;
-	@Column(index=10, name="EnableIndex", type=SQLDataType.INTEGER)
+	@Column(name="EnableIndex", type=SQLDataType.INTEGER)
 	private int enableIndex;
 	
 	public PluginInfo() {

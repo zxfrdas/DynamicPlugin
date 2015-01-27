@@ -17,10 +17,10 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.konka.dynamicplugin.core.PluginInfo;
+import com.konka.dynamicplugin.core.auto.PluginInfoProxy;
 import com.konka.dynamicplugin.core.tools.MD5FileUtil;
-import com.konka.dynamicplugin.database.PluginInfo2Proxy;
-import com.zt.lib.database.condition.Condition;
-import com.zt.lib.database.dao.IDAO;
+import com.zt.simpledao.condition.Condition;
+import com.zt.simpledao.dao.IDAO;
 
 public class LocalPluginChecker {
 	private static final String TAG = PluginManager.class.getSimpleName();
@@ -234,7 +234,7 @@ public class LocalPluginChecker {
 		Map<PluginInfo, Condition> updates = new HashMap<PluginInfo, Condition>();
 		for (PluginInfo info : plugins) {
 			Condition condition = mPluginDB.buildCondition()
-					.where(PluginInfo2Proxy.apkPath).equal(info.getApkPath())
+					.where(PluginInfoProxy.apkPath).equal(info.getApkPath())
 					.buildDone();
 			updates.put(info, condition);
 			Log.d(TAG, "updateRecorded, condition = " + condition);
@@ -245,7 +245,7 @@ public class LocalPluginChecker {
 
 	public void updateRecord(Context context, PluginInfo plugin) {
 		Condition condition = mPluginDB.buildCondition()
-				.where(PluginInfo2Proxy.apkPath).equal(plugin.getApkPath())
+				.where(PluginInfoProxy.apkPath).equal(plugin.getApkPath())
 				.buildDone();
 		Log.d(TAG, "updateRecorded, condition = " + condition);
 		mPluginDB.update(plugin, condition);
@@ -277,7 +277,7 @@ public class LocalPluginChecker {
 		Log.d(TAG, "removeRecord");
 		List<Condition> conditions = new ArrayList<Condition>();
 		for (PluginInfo info : plugins) {
-			Condition c = mPluginDB.buildCondition().where(PluginInfo2Proxy.apkPath)
+			Condition c = mPluginDB.buildCondition().where(PluginInfoProxy.apkPath)
 					.equal(info.getApkPath()).buildDone();
 			conditions.add(c);
 			Log.d(TAG, "removeRecord, condition = " + c);
