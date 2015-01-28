@@ -348,7 +348,8 @@ public final class PluginManager implements IPluginManager {
 		Log.d(TAG, "getEnablePlugins");
 		List<PluginInfo> enablePlugins = mPluginDB.query(mPluginDB.buildCondition()
 				.where(PluginInfoProxy.enabled).equal(true)
-				.orderby(PluginInfoProxy.enableIndex, true).buildDone());
+				.orderby(PluginInfoProxy.enableIndex).ascend()
+				.buildDone());
 		loadPluginsResource(enablePlugins);
 		return enablePlugins;
 	}

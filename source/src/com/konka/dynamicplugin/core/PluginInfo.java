@@ -16,25 +16,34 @@ import com.zt.simpledao.Table;
 @Database(name = "plugin.db", version = 4)
 @Table(name="plugins")
 public class PluginInfo {
-	@Column(name="Title", type=SQLDataType.TEXT)
+	@Column(index = 0, type=SQLDataType.TEXT)
 	private String title;
-	@Column(name="ApkPath", type=SQLDataType.TEXT, primary=true)
+	
+	@Column(index = 1, type=SQLDataType.TEXT, primary=true)
 	private String apkPath;
-	@Column(name="DexPath", type=SQLDataType.TEXT)
+	
+	@Column(index = 2, type=SQLDataType.TEXT)
 	private String dexPath;
-	@Column(name="PackageName", type=SQLDataType.TEXT)
+	
+	@Column(index = 3, type=SQLDataType.TEXT)
 	private String packageName;
-	@Column(name="EntryClass", type=SQLDataType.TEXT)
+	
+	@Column(index = 4, type=SQLDataType.TEXT)
 	private String entryClass;
-	@Column(name="Icon", type=SQLDataType.BLOB)
+	
+	@Column(index = 5, type=SQLDataType.BLOB)
 	private byte[] icon;
-	@Column(name="Version", type=SQLDataType.INTEGER)
+	
+	@Column(index = 6, type=SQLDataType.INTEGER)
 	private int version;
-	@Column(name="Install", type=SQLDataType.INTEGER)
+	
+	@Column(index = 7, type=SQLDataType.INTEGER)
 	private boolean installed;
-	@Column(name="Enable", type=SQLDataType.INTEGER)
+	
+	@Column(index = 8, type=SQLDataType.INTEGER)
 	private boolean enabled;
-	@Column(name="EnableIndex", type=SQLDataType.INTEGER)
+	
+	@Column(index = 9, type=SQLDataType.INTEGER)
 	private int enableIndex;
 	
 	public PluginInfo() {
