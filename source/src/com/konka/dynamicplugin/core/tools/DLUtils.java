@@ -41,6 +41,19 @@ public class DLUtils {
 		ApplicationInfo appInfo = addSourceDir(apkFilepath, pkgInfo);
 		return pm.getApplicationLabel(appInfo);
 	}
+	
+	public static int getAppLabelID(Context context, String apkFilePath)
+			throws FileNotFoundException {
+		int id = 0;
+		PackageInfo pkgInfo = getPackageInfo(context, apkFilePath);
+		if (null != pkgInfo) {
+			ApplicationInfo appInfo = addSourceDir(apkFilePath, pkgInfo);
+			if (null != appInfo) {
+				id = appInfo.labelRes;
+			}
+		}
+		return id;
+	}
 
 	public static CharSequence getAppPackageName(Context context, String apkFilepath)
 			throws FileNotFoundException {

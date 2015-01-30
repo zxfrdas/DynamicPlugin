@@ -2,12 +2,19 @@ package com.konka.dynamicplugin.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import com.konka.dynamicplugin.core.tools.DLUtils;
 import com.zt.simpledao.Column;
 import com.zt.simpledao.Database;
 import com.zt.simpledao.SQLDataType;
@@ -60,6 +67,33 @@ public class PluginInfo {
 	}
 
 	public String getTitle() {
+		return title;
+	}
+	
+	public String getTitle(Context context) {
+		String title = this.title;
+		try {
+			AssetManager assetManager = AssetManager.class.newInstance();
+			Method addAssetPath = assetManager.getClass().getMethod("addAssetPath",
+					String.class);
+			addAssetPath.invoke(assetManager, apkPath);
+			Resources resources = new Resources(assetManager, context.getResources()
+					.getDisplayMetrics(), context.getResources().getConfiguration());
+			final int titleID = DLUtils.getAppLabelID(context, apkPath);
+			title = resources.getString(titleID);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		return title;
 	}
 
