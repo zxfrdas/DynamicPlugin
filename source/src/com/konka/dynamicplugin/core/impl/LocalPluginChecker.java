@@ -233,7 +233,7 @@ public class LocalPluginChecker {
 		Log.d(TAG, "updateRecorded");
 		Map<PluginInfo, Condition> updates = new HashMap<PluginInfo, Condition>();
 		for (PluginInfo info : plugins) {
-			Condition condition = mPluginDB.buildCondition()
+			Condition condition = Condition.build()
 					.where(PluginInfoProxy.apkPath).equal(info.getApkPath())
 					.buildDone();
 			updates.put(info, condition);
@@ -244,7 +244,7 @@ public class LocalPluginChecker {
 	}
 
 	public void updateRecord(Context context, PluginInfo plugin) {
-		Condition condition = mPluginDB.buildCondition()
+		Condition condition = Condition.build()
 				.where(PluginInfoProxy.apkPath).equal(plugin.getApkPath())
 				.buildDone();
 		Log.d(TAG, "updateRecorded, condition = " + condition);
@@ -277,7 +277,7 @@ public class LocalPluginChecker {
 		Log.d(TAG, "removeRecord");
 		List<Condition> conditions = new ArrayList<Condition>();
 		for (PluginInfo info : plugins) {
-			Condition c = mPluginDB.buildCondition().where(PluginInfoProxy.apkPath)
+			Condition c = Condition.build().where(PluginInfoProxy.apkPath)
 					.equal(info.getApkPath()).buildDone();
 			conditions.add(c);
 			Log.d(TAG, "removeRecord, condition = " + c);

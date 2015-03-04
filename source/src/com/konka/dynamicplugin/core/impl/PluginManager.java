@@ -152,7 +152,7 @@ public final class PluginManager implements IPluginManager {
 		info.setDexPath(dexPath + File.separator + apkName + ".dex");
 		// apk icon
 		Drawable icon = DLUtils.getAppIcon(context, apkPath);
-		info.setIcon(icon);
+		info.setIconDrawable(icon);
 		// apk version
 		int version = DLUtils.getAppVersion(context, apkPath);
 		info.setVersion(version);
@@ -209,7 +209,7 @@ public final class PluginManager implements IPluginManager {
 	}
 
 	private Condition whereApkPath(String apkPath) {
-		return mPluginDB.buildCondition().where(PluginInfoProxy.apkPath)
+		return Condition.build().where(PluginInfoProxy.apkPath)
 				.equal(apkPath).buildDone();
 	}
 
@@ -339,14 +339,14 @@ public final class PluginManager implements IPluginManager {
 	@Override
 	public List<PluginInfo> getInstalledPlugins() {
 		Log.d(TAG, "getInstalledPlugins");
-		return mPluginDB.query(mPluginDB.buildCondition()
-				.where(PluginInfoProxy.installed).equal(true).buildDone());
+		return mPluginDB.query(Condition.build().where(PluginInfoProxy.installed)
+				.equal(true).buildDone());
 	}
 
 	@Override
 	public List<PluginInfo> getEnablePlugins() {
 		Log.d(TAG, "getEnablePlugins");
-		List<PluginInfo> enablePlugins = mPluginDB.query(mPluginDB.buildCondition()
+		List<PluginInfo> enablePlugins = mPluginDB.query(Condition.build()
 				.where(PluginInfoProxy.enabled).equal(true)
 				.orderby(PluginInfoProxy.enableIndex).ascend()
 				.buildDone());

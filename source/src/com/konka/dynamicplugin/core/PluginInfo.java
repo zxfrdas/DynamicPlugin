@@ -17,6 +17,8 @@ import android.graphics.drawable.Drawable;
 import com.konka.dynamicplugin.core.tools.DLUtils;
 import com.zt.simpledao.Column;
 import com.zt.simpledao.Database;
+import com.zt.simpledao.PropMethod;
+import com.zt.simpledao.PropMethodType;
 import com.zt.simpledao.SQLDataType;
 import com.zt.simpledao.Table;
 
@@ -66,6 +68,7 @@ public class PluginInfo {
 		enableIndex = -1;
 	}
 
+	@PropMethod(name = "title", type=PropMethodType.GET)
 	public String getTitle() {
 		return title;
 	}
@@ -97,43 +100,62 @@ public class PluginInfo {
 		return title;
 	}
 
+	@PropMethod(name = "title", type=PropMethodType.SET)
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	@PropMethod(name = "apkPath", type=PropMethodType.GET)
 	public String getApkPath() {
 		return apkPath;
 	}
 
+	@PropMethod(name = "apkPath", type=PropMethodType.SET)
 	public void setApkPath(String apkPath) {
 		this.apkPath = apkPath;
 	}
 
+	@PropMethod(name = "dexPath", type=PropMethodType.GET)
 	public String getDexPath() {
 		return dexPath;
 	}
 
+	@PropMethod(name = "dexPath", type=PropMethodType.SET)
 	public void setDexPath(String dexPath) {
 		this.dexPath = dexPath;
 	}
 	
+	@PropMethod(name = "packageName", type=PropMethodType.GET)
 	public String getPackageName() {
 		return packageName;
 	}
 	
+	@PropMethod(name = "packageName", type=PropMethodType.SET)
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
 
+	@PropMethod(name = "entryClass", type=PropMethodType.GET)
 	public String getEntryClass() {
 		return entryClass;
 	}
 
+	@PropMethod(name = "entryClass", type=PropMethodType.SET)
 	public void setEntryClass(String entryClass) {
 		this.entryClass = entryClass;
 	}
 	
-	public Drawable getIcon() {
+	@PropMethod(name = "icon", type=PropMethodType.GET)
+	public byte[] getIcon() {
+		return icon;
+	}
+	
+	@PropMethod(name = "icon", type=PropMethodType.SET)
+	public void setIcon(byte[] icon) {
+		this.icon = icon;
+	}
+	
+	public Drawable getIconDrawable() {
 		Drawable drawable = null;
 		if (null != this.icon) {
 			ByteArrayInputStream is = new ByteArrayInputStream(this.icon);
@@ -142,7 +164,7 @@ public class PluginInfo {
 		return drawable;
 	}
 	
-	public void setIcon(Drawable icon) {
+	public void setIconDrawable(Drawable icon) {
 		if (null != icon) {
 			final BitmapDrawable bDrawable = (BitmapDrawable) icon;
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -156,34 +178,42 @@ public class PluginInfo {
 		}
 	}
 	
+	@PropMethod(name = "version", type=PropMethodType.GET)
 	public int getVersion() {
 		return this.version;
 	}
 	
+	@PropMethod(name = "version", type=PropMethodType.SET)
 	public void setVersion(int version) {
 		this.version = version;
 	}
 
+	@PropMethod(name = "installed", type=PropMethodType.GET)
 	public boolean isInstalled() {
 		return installed;
 	}
 
+	@PropMethod(name = "installed", type=PropMethodType.SET)
 	public void setInstalled(boolean installed) {
 		this.installed = installed;
 	}
 
+	@PropMethod(name = "enabled", type=PropMethodType.GET)
 	public boolean isEnabled() {
 		return enabled;
 	}
 
+	@PropMethod(name = "enabled", type=PropMethodType.SET)
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
+	@PropMethod(name = "enableIndex", type=PropMethodType.GET)
 	public int getEnableIndex() {
 		return enableIndex;
 	}
 
+	@PropMethod(name = "enableIndex", type=PropMethodType.SET)
 	public void setEnableIndex(int enableIndex) {
 		this.enableIndex = enableIndex;
 	}

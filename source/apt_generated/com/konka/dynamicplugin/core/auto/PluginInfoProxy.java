@@ -1,13 +1,17 @@
 package com.konka.dynamicplugin.core.auto;
 
-import android.util.SparseArray;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.text.TextUtils;
 import com.konka.dynamicplugin.core.PluginInfo;
-import com.zt.simpledao.bean.ColumnItem;
 import com.zt.simpledao.bean.IBeanProxy;
-import com.zt.simpledao.SQLDataType;
 
-public class PluginInfoProxy implements IBeanProxy {
+public class PluginInfoProxy implements IBeanProxy<PluginInfo> {
 	// com.konka.dynamicplugin.core.PluginInfo
 	public static final String apkPath = "apkPath";
 	public static final int apkPath_id = 1;
@@ -33,34 +37,11 @@ public class PluginInfoProxy implements IBeanProxy {
 	private static final int VERSION = 4;
 	private static final String TABLE = "plugins";
 	private static final String TABLE_CREATOR = "create table plugins(title TEXT, apkPath TEXT, dexPath TEXT, packageName TEXT, entryClass TEXT, icon BLOB, version INTEGER, installed INTEGER, enabled INTEGER, enableIndex INTEGER, primary key (apkPath));";
-	private static final SparseArray<ColumnItem> ALL_COLUMNS = new SparseArray<ColumnItem>(10);
-	static {
-		Class<PluginInfo> claz = PluginInfo.class;
-		try {
-			ColumnItem item0 = new ColumnItem(0, "title", SQLDataType.TEXT, false, claz.getDeclaredField("title"));
-			ALL_COLUMNS.put(0, item0);
-			ColumnItem item1 = new ColumnItem(1, "apkPath", SQLDataType.TEXT, true, claz.getDeclaredField("apkPath"));
-			ALL_COLUMNS.put(1, item1);
-			ColumnItem item2 = new ColumnItem(2, "dexPath", SQLDataType.TEXT, false, claz.getDeclaredField("dexPath"));
-			ALL_COLUMNS.put(2, item2);
-			ColumnItem item3 = new ColumnItem(3, "packageName", SQLDataType.TEXT, false, claz.getDeclaredField("packageName"));
-			ALL_COLUMNS.put(3, item3);
-			ColumnItem item4 = new ColumnItem(4, "entryClass", SQLDataType.TEXT, false, claz.getDeclaredField("entryClass"));
-			ALL_COLUMNS.put(4, item4);
-			ColumnItem item5 = new ColumnItem(5, "icon", SQLDataType.BLOB, false, claz.getDeclaredField("icon"));
-			ALL_COLUMNS.put(5, item5);
-			ColumnItem item6 = new ColumnItem(6, "version", SQLDataType.INTEGER, false, claz.getDeclaredField("version"));
-			ALL_COLUMNS.put(6, item6);
-			ColumnItem item7 = new ColumnItem(7, "installed", SQLDataType.INTEGER, false, claz.getDeclaredField("installed"));
-			ALL_COLUMNS.put(7, item7);
-			ColumnItem item8 = new ColumnItem(8, "enabled", SQLDataType.INTEGER, false, claz.getDeclaredField("enabled"));
-			ALL_COLUMNS.put(8, item8);
-			ColumnItem item9 = new ColumnItem(9, "enableIndex", SQLDataType.INTEGER, false, claz.getDeclaredField("enableIndex"));
-			ALL_COLUMNS.put(9, item9);
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		}
-	}
+	private static final HashMap<String, String> CACHE_UPDATE = new HashMap<String, String>();
+	private static final HashMap<String, String> CACHE_DELETE = new HashMap<String, String>();
+	private static final String INSERT = "insert into plugins (title,apkPath,dexPath,packageName,entryClass,icon,version,installed,enabled,enableIndex) values(?,?,?,?,?,?,?,?,?,?);";
+	private static final String UPDATE = "update plugins set title=?, apkPath=?, dexPath=?, packageName=?, entryClass=?, icon=?, version=?, installed=?, enabled=?, enableIndex=? ";
+	private static final String DELETE = "delete from plugins ";
 
 	@Override
 	public String getDataBaseName() {
@@ -83,13 +64,98 @@ public class PluginInfoProxy implements IBeanProxy {
 	}
 
 	@Override
-	public Class<?> getBeanClass() {
+	public Class<PluginInfo> getBeanClass() {
 		return PluginInfo.class;
 	}
 
 	@Override
-	public SparseArray<ColumnItem> getAllColumns() {
-		return ALL_COLUMNS;
+	public List<PluginInfo> convertDatabaseToBean(Cursor cursor) {
+		List<PluginInfo> beans = new ArrayList<PluginInfo>();
+		if (null != cursor) {
+			while(cursor.moveToNext()) {
+				try {
+					PluginInfo item = getBeanClass().newInstance();
+					item.setTitle(cursor.getString(0));
+					item.setApkPath(cursor.getString(1));
+					item.setDexPath(cursor.getString(2));
+					item.setPackageName(cursor.getString(3));
+					item.setEntryClass(cursor.getString(4));
+					item.setIcon(cursor.getBlob(5));
+					item.setVersion(cursor.getInt(6));
+					item.setInstalled(cursor.getInt(7) == 1 ? true : false);
+					item.setEnabled(cursor.getInt(8) == 1 ? true : false);
+					item.setEnableIndex(cursor.getInt(9));
+					beans.add(item);
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+			cursor.close();
+		}
+		return beans;
+	}
+
+	@Override
+	public SQLiteStatement createInsertSQL(SQLiteDatabase database,PluginInfo bean) {
+		SQLiteStatement sqLiteStatement = database.compileStatement(INSERT);
+		bindBeanArg(sqLiteStatement, bean);
+		return sqLiteStatement;
+	}
+
+	@Override
+	public SQLiteStatement createUpdateSQL(SQLiteDatabase database,PluginInfo bean, String whereClause, String[] whereArgs) {
+		final int argCount = (null == whereArgs) ? 10 : (10 + whereArgs.length);
+		String sql = CACHE_UPDATE.get(whereClause);
+		if (null == sql) {
+			StringBuilder sb = new StringBuilder(UPDATE);
+			if (!TextUtils.isEmpty(whereClause)) {
+				sb.append(" where ").append(whereClause);
+			}
+			sql = sb.toString();
+			CACHE_UPDATE.put(whereClause, sql);
+		}
+		SQLiteStatement statement = database.compileStatement(sql);
+		bindBeanArg(statement, bean);
+		for (int i = 10; i < argCount; i ++) {
+			statement.bindString(i + 1, whereArgs[i - 10]);
+		}
+		return statement;
+	}
+
+	private void bindBeanArg(SQLiteStatement statement, PluginInfo bean) {
+		statement.bindString(1, null == bean.getTitle() ? "" : bean.getTitle().toString());
+		statement.bindString(2, null == bean.getApkPath() ? "" : bean.getApkPath().toString());
+		statement.bindString(3, null == bean.getDexPath() ? "" : bean.getDexPath().toString());
+		statement.bindString(4, null == bean.getPackageName() ? "" : bean.getPackageName().toString());
+		statement.bindString(5, null == bean.getEntryClass() ? "" : bean.getEntryClass().toString());
+		statement.bindBlob(6, bean.getIcon());
+		statement.bindLong(7, bean.getVersion());
+		statement.bindLong(8, bean.isInstalled() ? 1 : 0);
+		statement.bindLong(9, bean.isEnabled() ? 1 : 0);
+		statement.bindLong(10, bean.getEnableIndex());
+	}
+
+	@Override
+	public SQLiteStatement createDeleteSQL(SQLiteDatabase database, String whereClause, String[] whereArgs) {
+		String sql = CACHE_DELETE.get(whereClause);
+		if (null == sql) {
+			StringBuilder sb = new StringBuilder(DELETE);
+			if (!TextUtils.isEmpty(whereClause)) {
+				sb.append(" where ").append(whereClause);
+			}
+			CACHE_DELETE.put(whereClause, sql = sb.toString());
+		}
+		SQLiteStatement statement = database.compileStatement(sql);
+		if (null != whereArgs) {
+			int index = 0;
+			for (String s : whereArgs) {
+				statement.bindString(index + 1, s);
+				index++;
+			}
+		}
+		return statement;
 	}
 
 }
