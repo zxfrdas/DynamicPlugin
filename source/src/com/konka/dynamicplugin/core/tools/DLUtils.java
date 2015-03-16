@@ -15,8 +15,12 @@ public class DLUtils {
 			throws FileNotFoundException {
 		PackageManager pm = context.getPackageManager();
 		PackageInfo pkgInfo = null;
-		pkgInfo = pm.getPackageArchiveInfo(apkFilepath,
-				PackageManager.GET_ACTIVITIES | PackageManager.GET_PERMISSIONS);
+		try {
+			pkgInfo = pm.getPackageArchiveInfo(apkFilepath,
+					PackageManager.GET_ACTIVITIES | PackageManager.GET_PERMISSIONS);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return pkgInfo;
 	}
 

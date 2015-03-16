@@ -1,5 +1,5 @@
 #Fat Jar Configuration File
-#Wed Mar 04 14:01:44 CST 2015
+#Mon Mar 09 14:53:30 CST 2015
 onejar.license.required=false
 manifest.classpath=
 manifest.removesigners=true
@@ -11,4 +11,4 @@ manifest.file=<createnew>
 jarname.isextern=false
 onejar.expand=
 excludes=
-includes=
+includes=<inc|DynamicPlugin/src>

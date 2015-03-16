@@ -118,6 +118,7 @@ public final class PluginManager implements IPluginManager {
 
 	private List<PluginInfo> parseAllExistPluginsInfo(Context context, File[] apks)
 			throws FileNotFoundException {
+		if (null == apks) throw new FileNotFoundException("");
 		List<PluginInfo> pluginInfos = new ArrayList<PluginInfo>(apks.length);
 		for (File apk : apks) {
 			PluginInfo info = parsePluginInfo(context, apk);
@@ -500,7 +501,10 @@ public final class PluginManager implements IPluginManager {
 	public View getPluginView(Context context, PluginInfo pluginInfo) {
 		mResController.holdPluginResource(pluginInfo);
 		IPlugin plugin = launchPlugin(context, pluginInfo);
-		View view = plugin.getPluginView();
+		View view = null;
+		if (null != plugin) {
+			view = plugin.getPluginView();
+		}
 		mResController.releasePluginResource(pluginInfo);
 		return view;
 	}

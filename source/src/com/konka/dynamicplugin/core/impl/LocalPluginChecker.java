@@ -1,10 +1,6 @@
 package com.konka.dynamicplugin.core.impl;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +9,6 @@ import java.util.Map;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.konka.dynamicplugin.core.PluginInfo;
@@ -42,67 +37,27 @@ public class LocalPluginChecker {
 
 	public void initChecker(Context context, IDAO<PluginInfo> database) {
 		mLocalPluginPath = checkStoragePathExist(context);
-		releaseDefaultPlugin(context, mLocalPluginPath);
+		Log.d(TAG, "mLocalPluginPath = " + mLocalPluginPath);
 		mPluginDB = database;
 	}
 
 	private File checkStoragePathExist(Context context) {
 		File systemPluginPath = new File(SYSTEM_PLUGIN_PATH);
-		if (systemPluginPath.exists()) {
-			return systemPluginPath;
-		} else {
-			File localPluginPath = context.getDir("plugins", Context.MODE_PRIVATE);
-			return localPluginPath;
+		if (!systemPluginPath.exists()) {
+			systemPluginPath.mkdir();
+			systemPluginPath.setReadable(true, false);
+			systemPluginPath.setWritable(true, false);
 		}
+		return systemPluginPath;
 	}
-
-	private void releaseDefaultPlugin(Context context, File outPath) {
-		if (0 != outPath.listFiles().length) {
-			// 不需要从assets拷贝
-			return;
-		}
-		AssetManager assetManager = context.getAssets();
-		String[] files;
-		try {
-			files = assetManager.list("plugins");
-			for (String s : files) {
-				Log.d(TAG, "asset's plugin file = " + s);
-				InputStream is = assetManager.open("plugins/" + s);
-				File f = new File(outPath.getAbsoluteFile() + File.separator + s);
-				output(is, new FileOutputStream(f));
-				f.setWritable(true, false);
-				f.setReadable(true, false);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void output(InputStream is, OutputStream os) {
-		byte[] buffer = new byte[1024];
-		int count = 0;
-		try {
-			while ((count = is.read(buffer)) > 0) {
-				os.write(buffer, 0, count);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				os.flush();
-				os.close();
-				is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
+	
 	public boolean isRecordEmpty() {
 		return (0 == mPluginDB.getCount());
 	}
 
 	public File[] getLocalExistPlugins() {
+		Log.d(TAG, "getLocalExistPlugins, mLocalPluginPath = " + mLocalPluginPath);
+		Log.d(TAG, "getLocalExistPlugins, files = " + mLocalPluginPath.listFiles());
 		return mLocalPluginPath.listFiles();
 	}
 
