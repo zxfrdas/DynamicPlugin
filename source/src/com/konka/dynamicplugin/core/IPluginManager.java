@@ -215,6 +215,13 @@ public interface IPluginManager {
 	 * @return 所有已启用的插件。无则返回空列表。
 	 */
 	List<PluginInfo> getEnablePlugins();
+	
+	/**
+	 * 更新插件信息类
+	 * @param plugin 指定插件
+	 * @return 更新后的信息类
+	 */
+	PluginInfo updatePlugin(PluginInfo plugin);
 
 	/**
 	 * 获取指定插件提供的视图

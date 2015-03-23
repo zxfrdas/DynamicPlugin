@@ -543,4 +543,18 @@ public final class PluginManager implements IPluginManager {
 		return (null != mResController) ? mResController.getClassLoader() : null;
 	}
 
+	@Override
+	public PluginInfo updatePlugin(PluginInfo plugin) {
+		List<PluginInfo> info = mPluginDB.query(whereApkPath(plugin
+				.getApkPath()));
+		if (!info.isEmpty()) {
+			PluginInfo result = info.get(0);
+			plugin.setInstalled(result.isInstalled());
+			plugin.setEnabled(result.isEnabled());
+			plugin.setEnableIndex(result.getEnableIndex());
+			return info.get(0);
+		}
+		return null;
+	}
+
 }
